@@ -9,7 +9,7 @@ const defaultConfig = {
   // Set an optional size limit
   maxDownloadWidth: null,
   // Include download links to the renderings section of the manifest
-  includeRenderings: false
+  includeRenderings: false,
 };
 
 /** Selector to get the plugin config for a given window */
