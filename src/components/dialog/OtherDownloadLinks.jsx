@@ -12,20 +12,24 @@ const OtherDownloadLinks = ({ links }) => {
       {links
         .filter(({ format }) => format !== "text/html")
         .map(({ label, value }) => (
-        <ListItem dense key={value}>
-          <Box
-            fontFamily={theme.typography.fontFamily ?? "sans-serif"}
-            fontSize="0.75rem"
-          >
-            <Link href={value} rel="noopener" target="_blank">
-              {label}
-            </Link>
-          </Box>
-        </ListItem>
-      ))}
+          <ListItem dense key={value}>
+            <Box
+              fontFamily={theme.typography.fontFamily ?? "sans-serif"}
+              fontSize="0.75rem"
+            >
+              <Link href={value} rel="noopener" target="_blank">
+                {label}
+              </Link>
+            </Box>
+          </ListItem>
+        ))}
     </>
-  )
-}
+  );
+};
+
+OtherDownloadLinks.defaultProps = {
+  links: [],
+};
 
 OtherDownloadLinks.propTypes = {
   links: PropTypes.arrayOf(
@@ -33,8 +37,8 @@ OtherDownloadLinks.propTypes = {
       format: PropTypes.string,
       label: PropTypes.string,
       value: PropTypes.string,
-    })
-  )
-}
+    }),
+  ),
+};
 
 export default OtherDownloadLinks;

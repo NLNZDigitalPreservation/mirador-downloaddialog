@@ -3,7 +3,7 @@ import {
   getCanvasLabel,
   getContainerId,
   getManifestRelatedContent,
-  getManifestRenderings, 
+  getManifestRenderings,
   getManifestUrl,
   getVisibleCanvases,
   selectInfoResponse,
