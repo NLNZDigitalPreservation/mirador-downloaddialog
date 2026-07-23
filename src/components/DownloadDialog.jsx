@@ -95,7 +95,7 @@ const DownloadDialog = ({
                 </ListItem>
                 <OtherDownloadLinks links={seeAlso} />
                 {includeRenderings && <OtherDownloadLinks links={renderings} />}
-            </List>
+              </List>
             </CardContent>
           </Card>
         </Box>
@@ -112,6 +112,7 @@ const DownloadDialog = ({
 DownloadDialog.defaultProps = {
   children: undefined,
   manifestUrl: undefined,
+  renderings: [],
   seeAlso: [],
 };
 
