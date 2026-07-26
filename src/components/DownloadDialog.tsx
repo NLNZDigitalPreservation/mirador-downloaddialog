@@ -23,7 +23,7 @@ import DownloadDialogPluginArea from "../containers/dialog/DownloadDialogPluginA
 import { PluginConfig } from "../state/selectors";
 import CanvasDownloadLinks from "./dialog/CanvasDownloadLinks";
 
-interface SeeAlsoEntry {
+interface DownloadOptionEntry {
   format?: string;
   label?: string;
   value?: string;
@@ -36,7 +36,8 @@ interface DownloadDialogProps {
   containerId: string;
   infoResponse: (canvasId: string) => { json?: { sizes?: ImageSize[] } };
   manifestUrl?: string;
-  seeAlso?: SeeAlsoEntry[];
+  seeAlso?: DownloadOptionEntry[];
+  rendering?: DownloadOptionEntry[];
   updateConfig: (config: PluginConfig) => void;
   visibleCanvases: Canvas[];
   windowId: string;
@@ -49,6 +50,7 @@ const DownloadDialog = ({
   containerId,
   infoResponse,
   manifestUrl,
+  rendering = [],
   seeAlso = [],
   updateConfig,
   visibleCanvases,
@@ -56,7 +58,24 @@ const DownloadDialog = ({
 }: DownloadDialogProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
-  const { dialogOpen, enabled } = config;
+  const { dialogOpen, enabled, includeRenderings } = config;
+
+  const renderDownloadOptionEntries = (entries: DownloadOptionEntry[]) =>
+    entries
+      .filter(({ format }) => format !== "text/html")
+      .map(({ label, value }) => (
+        <ListItem dense key={value}>
+          <Box
+            fontFamily={theme.typography.fontFamily ?? "sans-serif"}
+            fontSize="0.75rem"
+          >
+            <Link href={value} rel="noopener" target="_blank">
+              {label}
+            </Link>
+          </Box>
+        </ListItem>
+      ));
+
   if (!enabled || !dialogOpen) {
     return null;
   }
@@ -112,20 +131,8 @@ const DownloadDialog = ({
                     </Link>
                   </Box>
                 </ListItem>
-                {seeAlso
-                  .filter(({ format }) => format !== "text/html")
-                  .map(({ label, value }) => (
-                    <ListItem dense key={value}>
-                      <Box
-                        fontFamily={theme.typography.fontFamily ?? "sans-serif"}
-                        fontSize="0.75rem"
-                      >
-                        <Link href={value} rel="noopener" target="_blank">
-                          {label}
-                        </Link>
-                      </Box>
-                    </ListItem>
-                  ))}
+                {renderDownloadOptionEntries(seeAlso)}
+                {includeRenderings && renderDownloadOptionEntries(rendering)}
               </List>
             </CardContent>
           </Card>
