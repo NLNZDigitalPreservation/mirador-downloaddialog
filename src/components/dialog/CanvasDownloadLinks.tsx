@@ -12,12 +12,14 @@ import ImageLink from "./ImageLink";
 interface CanvasDownloadLinksProps {
   canvas: Canvas;
   label: number | string;
+  maxDownloadWidth?: number | null;
   sizes?: ImageSize[];
 }
 
 const CanvasDownloadLinks = ({
   canvas,
   label,
+  maxDownloadWidth,
   sizes = [],
 }: CanvasDownloadLinksProps) => {
   const { t } = useTranslation();
@@ -36,16 +38,28 @@ const CanvasDownloadLinks = ({
             .sort((a, b) => b.width - a.width)
             .slice(1)
             .reduce(
-              (acc, { height, width }) => {
-                // only take sizes, where the difference between the last taken width
-                // and the current one is bigger than 500 pixels
-                if (acc[acc.length - 1].width - width >= 500) {
-                  acc.push({ height, width });
+              (acc: { height: number; width: number }[], { height, width }) => {
+                // Initialize from the largest allowed available size when max width is set.
+                if (acc.length === 0) {
+                  if (maxDownloadWidth == null || width <= maxDownloadWidth) {
+                    acc.push({ height, width });
+                  } else {
+                    acc.push({
+                      height: calculateHeight(maxDownloadWidth, canvas),
+                      width: maxDownloadWidth,
+                    });
+                  }
+                  // Once initialized, only keep sizes at least 500px apart.
+                } else if (acc[acc.length - 1].width - width >= 500) {
+                  if (maxDownloadWidth == null || width <= maxDownloadWidth) {
+                    acc.push({ height, width });
+                  }
                 }
                 return acc;
               },
-              // this represents the full size
-              [{ height: canvas.getHeight(), width: canvas.getWidth() }],
+              maxDownloadWidth == null
+                ? [{ height: canvas.getHeight(), width: canvas.getWidth() }]
+                : [],
             )
             .map(({ height, width }) => (
               <ListItem dense key={`${height}x${width}`}>
@@ -60,6 +74,12 @@ const CanvasDownloadLinks = ({
       </CardContent>
     </Card>
   );
+};
+
+// function for calculating the image height given a width, and the full height and width of the canvas
+const calculateHeight = (width: number, canvas: Canvas) => {
+  const aspectRatio = canvas.getWidth() / canvas.getHeight();
+  return Math.round(width / aspectRatio);
 };
 
 export default CanvasDownloadLinks;

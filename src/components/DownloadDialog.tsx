@@ -83,6 +83,7 @@ const DownloadDialog = ({
             canvas={canvas}
             key={canvas.id}
             label={canvasLabel(canvas.id)}
+            maxDownloadWidth={config.maxDownloadWidth}
             sizes={infoResponse(canvas.id).json?.sizes}
           />
         ))}

@@ -24,6 +24,11 @@ declare module "mirador" {
     [key: string]: unknown;
   };
 
+  export function getManifestRenderings(
+    state: unknown,
+    props: { windowId: string },
+  ): { label?: string; value?: string }[];
+
   export function getManifestSeeAlso(
     state: unknown,
     props: { windowId: string },

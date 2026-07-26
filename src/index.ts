@@ -4,6 +4,7 @@
 import {
   getCanvasLabel,
   getConfig,
+  getManifestRenderings,
   getManifestSeeAlso,
   getManifestUrl,
   getVisibleCanvases,
@@ -75,6 +76,7 @@ const plugins: MiradorPlugin[] = [
       infoResponse: (canvasId: string) =>
         selectInfoResponse(state, { canvasId, windowId }) ?? {},
       manifestUrl: getManifestUrl(state, { windowId }),
+      renderings: getManifestRenderings(state, { windowId }),
       seeAlso: getManifestSeeAlso(state, { windowId }),
       visibleCanvases: getVisibleCanvases(state, { windowId }),
     }),
