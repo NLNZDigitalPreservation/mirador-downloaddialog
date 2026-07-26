@@ -1,6 +1,6 @@
 {
   "name": "mirador-downloaddialog",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Mirador 4 plugin to add a dialog containing download links",
   "keywords": [
     "iiif",
@@ -28,6 +28,7 @@
     "build:plugin": "tsc && vite build",
     "format": "eslint . --ext js,jsx,ts,tsx --fix --max-warnings 0 --report-unused-disable-directives",
     "lint": "eslint . --ext js,jsx,ts,tsx --max-warnings 0 --report-unused-disable-directives",
+    "prepare": "npm run build:plugin",
     "prepublishOnly": "npm run build",
     "prepreview": "npm run build:demo",
     "preview": "BUILD_MODE=demo vite preview",
